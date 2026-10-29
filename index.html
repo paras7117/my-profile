@@ -1,0 +1,3257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paras Choudhary | Futuristic CS & AI Portfolio</title>
+  <style>
+    /* ==========================================================================
+       PARAS CHOUDHARY — FUTURISTIC PORTFOLIO SYSTEM
+       Engineered with Pure HTML5 & CSS3 | Zero External Dependencies & No JS
+       ========================================================================== */
+
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    /* Design Tokens & Custom Variables */
+    :root {
+      --bg-void: #030712;
+      --bg-dark: #060b19;
+      --bg-surface: rgba(13, 22, 45, 0.65);
+      --bg-surface-elevated: rgba(20, 32, 65, 0.8);
+      --bg-glass-card: rgba(255, 255, 255, 0.03);
+      --bg-glass-card-hover: rgba(255, 255, 255, 0.06);
+
+      --neon-cyan: #00f0ff;
+      --neon-cyan-glow: rgba(0, 240, 255, 0.35);
+      --neon-cyan-subtle: rgba(0, 240, 255, 0.12);
+      --neon-purple: #a855f7;
+      --neon-purple-glow: rgba(168, 85, 247, 0.35);
+      --neon-violet: #6366f1;
+      --neon-pink: #ec4899;
+      --neon-gold: #fbbf24;
+      --neon-orange: #f97316;
+      --neon-emerald: #10b981;
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-dim: #475569;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-neon: rgba(0, 240, 255, 0.35);
+      --border-purple: rgba(168, 85, 247, 0.35);
+
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-med: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base Rules */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+      font-size: 16px;
+      background-color: var(--bg-void);
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection {
+      background: var(--neon-cyan);
+      color: var(--bg-void);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ==========================================================================
+       STARTUP ANIMATION: INITIALIZING SYSTEM HUD
+       Plays automatically upon page launch, then seamlessly dissolves
+       ========================================================================== */
+    .startup-screen {
+      position: fixed;
+      inset: 0;
+      background: #02050e;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      animation: startupDissolve 0.85s var(--ease-out-expo) 3.1s forwards;
+      pointer-events: all;
+    }
+
+    @keyframes startupDissolve {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+        visibility: visible;
+      }
+      85% {
+        opacity: 0.05;
+        transform: scale(1.04);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.06);
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
+
+    .startup-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.5;
+    }
+
+    .startup-scanline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      box-shadow: 0 0 20px var(--neon-cyan);
+      animation: scanSweepFast 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes scanSweepFast {
+      0% { top: 0%; opacity: 0.2; }
+      100% { top: 100%; opacity: 0.9; }
+    }
+
+    .startup-terminal-box {
+      position: relative;
+      z-index: 2;
+      width: 90%;
+      max-width: 540px;
+      background: rgba(8, 14, 32, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 20px;
+      padding: 2.25rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 240, 255, 0.2);
+    }
+
+    .startup-status-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .startup-title-tag {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: 0.08em;
+    }
+
+    .startup-blinker {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+      animation: pulseBlink 0.8s infinite alternate;
+    }
+
+    .startup-big-message {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .startup-big-message span.anim-text {
+      background: linear-gradient(135deg, #ffffff, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .startup-subhead {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Startup Loading Bar */
+    .startup-progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .startup-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+      border-radius: 999px;
+      box-shadow: 0 0 15px var(--neon-cyan);
+      animation: fillBar 2.6s var(--ease-out-expo) 0.2s forwards;
+    }
+
+    @keyframes fillBar {
+      0% { width: 0%; }
+      25% { width: 35%; }
+      60% { width: 72%; }
+      85% { width: 93%; }
+      100% { width: 100%; }
+    }
+
+    .startup-logs-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .startup-log-line {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      opacity: 0;
+      animation: logFadeIn 0.3s ease forwards;
+    }
+
+    .startup-log-line:nth-child(1) { animation-delay: 0.4s; }
+    .startup-log-line:nth-child(2) { animation-delay: 1.0s; }
+    .startup-log-line:nth-child(3) { animation-delay: 1.6s; }
+    .startup-log-line:nth-child(4) { animation-delay: 2.2s; color: var(--neon-cyan); }
+
+    @keyframes logFadeIn {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .log-badge-ok {
+      color: var(--neon-emerald);
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       PROGRESS TRACKER (TOP OF PAGE SCROLL-FILL BAR)
+       Pure CSS3 Viewport Scroll Tracker
+       ========================================================================== */
+    .viewport-progress-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 9999;
+    }
+
+    .viewport-progress-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+      box-shadow: 0 0 12px var(--neon-cyan);
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      animation: growProgress linear;
+      animation-timeline: scroll(root);
+    }
+
+    @keyframes growProgress {
+      0% { transform: scaleX(0); }
+      100% { transform: scaleX(1); }
+    }
+
+    @supports not (animation-timeline: scroll()) {
+      .viewport-progress-bar {
+        transform: scaleX(1);
+        opacity: 0.8;
+      }
+    }
+
+    /* ==========================================================================
+       COSMIC PARALLAX & ANIMATED GRADIENT CANVAS
+       ========================================================================== */
+    .cosmic-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .nebula-grid {
+      position: absolute;
+      inset: -120px;
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
+      background-size: 60px 60px;
+      transform: perspective(600px) rotateX(45deg);
+      transform-origin: center top;
+      animation: gridDrift 45s linear infinite;
+      mask-image: radial-gradient(circle at 50% 35%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at 50% 35%, black 20%, transparent 80%);
+    }
+
+    @keyframes gridDrift {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 600px; }
+    }
+
+    /* Parallax Floating Nebula Orbs */
+    .nebula-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.38;
+      mix-blend-mode: screen;
+      will-change: transform;
+    }
+
+    .nebula-orb-1 {
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, var(--neon-cyan) 0%, rgba(0, 240, 255, 0) 70%);
+      top: -150px;
+      left: -150px;
+      animation: floatOrb1 24s ease-in-out infinite alternate;
+    }
+
+    .nebula-orb-2 {
+      width: 750px;
+      height: 750px;
+      background: radial-gradient(circle, var(--neon-purple) 0%, rgba(168, 85, 247, 0) 70%);
+      top: 35%;
+      right: -200px;
+      animation: floatOrb2 28s ease-in-out infinite alternate;
+    }
+
+    .nebula-orb-3 {
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, var(--neon-violet) 0%, rgba(99, 102, 241, 0) 70%);
+      bottom: -100px;
+      left: 15%;
+      animation: floatOrb3 30s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatOrb1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(140px, 120px) scale(1.15); }
+      100% { transform: translate(50px, -50px) scale(0.9); }
+    }
+
+    @keyframes floatOrb2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-160px, 100px) scale(1.2); }
+      100% { transform: translate(-70px, -90px) scale(0.95); }
+    }
+
+    @keyframes floatOrb3 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(90px, -90px) scale(1.1); }
+      100% { transform: translate(-80px, 50px) scale(0.92); }
+    }
+
+    /* Parallax Scrolling Timeline Integration */
+    @supports (animation-timeline: scroll()) {
+      .parallax-slow {
+        animation: parallaxMoveSlow linear;
+        animation-timeline: scroll(root);
+      }
+      .parallax-fast {
+        animation: parallaxMoveFast linear;
+        animation-timeline: scroll(root);
+      }
+    }
+
+    @keyframes parallaxMoveSlow {
+      from { transform: translateY(0); }
+      to { transform: translateY(160px); }
+    }
+
+    @keyframes parallaxMoveFast {
+      from { transform: translateY(0); }
+      to { transform: translateY(-100px); }
+    }
+
+    /* ==========================================================================
+       SCROLL-TRIGGERED REVEALS (NATURAL READING RHYTHM)
+       Pure CSS Scroll-Driven View Animations with Graceful Fallback
+       ========================================================================== */
+    .scroll-reveal {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+    }
+
+    @supports (animation-timeline: view()) {
+      .scroll-reveal {
+        animation: scrollRevealFade linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 30%;
+      }
+    }
+
+    @keyframes scrollRevealFade {
+      from {
+        opacity: 0.15;
+        transform: translateY(35px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Layout Wrapper */
+    .site-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Dynamic Page Transition / Section Sweeps */
+    .section-transition-glow {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.4), rgba(168, 85, 247, 0.4), transparent);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+      margin: 2rem 0;
+    }
+
+    /* ==========================================================================
+       NAVIGATION BAR (FIXED GLASS)
+       ========================================================================== */
+    .navbar {
+      position: fixed;
+      top: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 3rem);
+      max-width: 1120px;
+      z-index: 100;
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(7, 13, 30, 0.72);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9999px;
+      padding: 0.75rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transition: var(--transition-med);
+    }
+
+    .navbar:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 14px 50px rgba(0, 240, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .brand-signature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .brand-monogram {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--bg-void);
+      box-shadow: 0 0 15px var(--neon-cyan-glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-monogram::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%);
+      transform: rotate(45deg);
+      animation: monogramShine 5s infinite;
+    }
+
+    @keyframes monogramShine {
+      0%, 80% { transform: translateX(-150%) rotate(45deg); }
+      100% { transform: translateX(150%) rotate(45deg); }
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      position: relative;
+      padding: 0.35rem 0;
+      transition: color var(--transition-fast);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      border-radius: 2px;
+      transition: width var(--transition-med);
+      box-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    .nav-link:hover {
+      color: var(--neon-cyan);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-badge-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 9999px;
+      padding: 0.35rem 0.85rem;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--neon-cyan);
+      box-shadow: 0 0 8px var(--neon-cyan);
+      animation: pulseBlink 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* Mobile Pure CSS Navigation Drawer Toggle */
+    .nav-toggle-input {
+      display: none;
+    }
+
+    .nav-toggle-label {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle-bar {
+      width: 22px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: var(--transition-fast);
+    }
+
+    /* Section Typography & Headers */
+    section {
+      padding: 6.5rem 0 4.5rem 0;
+      position: relative;
+    }
+
+    .section-header {
+      margin-bottom: 3.5rem;
+      text-align: left;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--neon-cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      background: rgba(0, 240, 255, 0.07);
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--neon-cyan);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4.2vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      margin-bottom: 0.85rem;
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #ffffff 15%, var(--neon-cyan) 60%, var(--neon-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    /* Glassmorphic Cyber Cards */
+    .glass-card {
+      background: var(--bg-surface);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 2.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition-med), border-color var(--transition-med), box-shadow var(--transition-med), background var(--transition-med);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 240, 255, 0.35);
+      box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.7), 0 0 30px -10px var(--neon-cyan-glow);
+      background: var(--bg-surface-elevated);
+    }
+
+    /* ==========================================================================
+       INFINITE HORIZONTAL MARQUEES
+       Continuous, smooth horizontal tickers without manual user scrolling
+       ========================================================================== */
+    .marquee-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      padding: 1.25rem 0;
+      margin: 1.5rem 0 3.5rem 0;
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      gap: 1.5rem;
+      animation: marqueeScrollLeft 32s linear infinite;
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .marquee-track-reverse {
+      animation: marqueeScrollRight 34s linear infinite;
+    }
+
+    .marquee-track-reverse:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes marqueeScrollLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @keyframes marqueeScrollRight {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    .marquee-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.65rem 1.4rem;
+      background: rgba(13, 22, 45, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      white-space: nowrap;
+      backdrop-filter: blur(10px);
+      transition: all var(--transition-fast);
+    }
+
+    .marquee-badge:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      box-shadow: 0 0 15px var(--neon-cyan-glow);
+      transform: translateY(-2px);
+    }
+
+    .marquee-icon {
+      font-size: 0.95rem;
+    }
+
+    /* ==========================================================================
+       1. CINEMATIC HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 0 4rem 0;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-hud-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .hud-pill {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .hud-pill.location-pill {
+      color: #c084fc;
+      background: rgba(192, 132, 252, 0.08);
+      border-color: rgba(192, 132, 252, 0.25);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--neon-cyan);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6.2vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .hero-headline span.highlight {
+      background: linear-gradient(135deg, #ffffff 10%, var(--neon-cyan) 50%, var(--neon-purple) 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+      text-shadow: 0 0 40px var(--neon-cyan-glow);
+    }
+
+    .hero-lead {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 580px;
+    }
+
+    .hero-lead strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      align-items: center;
+      margin-top: 0.75rem;
+    }
+
+    /* Buttons */
+    .btn-cyber-primary {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.95rem 2rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      color: #030712;
+      background: linear-gradient(135deg, var(--neon-cyan), #38bdf8);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 25px var(--neon-cyan-glow), 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: transform var(--transition-med), box-shadow var(--transition-med);
+    }
+
+    .btn-cyber-primary::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 220%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%);
+      transform: rotate(30deg);
+      transition: transform 0.6s ease;
+    }
+
+    .btn-cyber-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.6), 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-cyber-primary:hover::before {
+      transform: translateX(60%) rotate(30deg);
+    }
+
+    .btn-cyber-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.95rem 1.85rem;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      transition: transform var(--transition-med), border-color var(--transition-med), background var(--transition-med);
+    }
+
+    .btn-cyber-ghost:hover {
+      transform: translateY(-3px);
+      border-color: var(--neon-purple);
+      background: rgba(168, 85, 247, 0.1);
+      box-shadow: 0 0 25px var(--neon-purple-glow);
+      color: #fff;
+    }
+
+    /* Hologram Visual Presentation */
+    .hero-hologram-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hologram-stage {
+      position: relative;
+      width: 360px;
+      height: 420px;
+      border-radius: 28px;
+      background: linear-gradient(160deg, rgba(20, 32, 65, 0.8), rgba(7, 13, 30, 0.9));
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 240, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px dashed rgba(0, 240, 255, 0.25);
+      pointer-events: none;
+    }
+
+    .orbit-ring-1 {
+      width: 300px;
+      height: 300px;
+      animation: rotateClockwise 30s linear infinite;
+    }
+
+    .orbit-ring-2 {
+      width: 230px;
+      height: 230px;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      animation: rotateCounter 18s linear infinite;
+    }
+
+    @keyframes rotateClockwise {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateCounter {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    .hologram-core {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1e293b 0%, #0b0f19 100%);
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 35px var(--neon-cyan-glow), inset 0 0 25px rgba(0, 240, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      animation: hologramFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes hologramFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .core-initials {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, #ffffff, var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .core-spec {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--neon-cyan);
+      letter-spacing: 0.15em;
+      margin-top: 0.25rem;
+    }
+
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      box-shadow: 0 0 15px var(--neon-cyan);
+      animation: scanSweep 3.5s ease-in-out infinite alternate;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    @keyframes scanSweep {
+      0% { top: 5%; opacity: 0.1; }
+      50% { opacity: 0.8; }
+      100% { top: 95%; opacity: 0.1; }
+    }
+
+    .hologram-hud-meta {
+      margin-top: 2rem;
+      text-align: center;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .hud-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .hud-role {
+      font-size: 0.82rem;
+      color: var(--neon-cyan);
+      font-family: var(--font-mono);
+      margin-top: 0.25rem;
+    }
+
+    .hud-location {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .satellite-badge {
+      position: absolute;
+      background: rgba(13, 22, 45, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 0.65rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      z-index: 4;
+      animation: satelliteFloat 5s ease-in-out infinite alternate;
+    }
+
+    .satellite-badge-1 {
+      top: 15px;
+      left: -25px;
+      border-color: rgba(0, 240, 255, 0.3);
+    }
+
+    .satellite-badge-2 {
+      bottom: 25px;
+      right: -25px;
+      animation-delay: -3s;
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+
+    @keyframes satelliteFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-12px); }
+    }
+
+    /* ==========================================================================
+       LOTTIE-STYLE INTERACTIVE VECTOR GRAPHICS (SVG + CSS3)
+       Lightweight vector graphics reacting to hover, scroll & cursor
+       ========================================================================== */
+    .lottie-showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .lottie-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition-med);
+    }
+
+    .lottie-card:hover {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 35px var(--neon-cyan-glow);
+      transform: translateY(-6px);
+    }
+
+    .lottie-card-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 1.25rem;
+    }
+
+    .lottie-stage {
+      width: 100%;
+      max-width: 260px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    /* Interactive SVG AI Brain Neural Mesh */
+    .lottie-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .pulse-node {
+      animation: pulseNodeAnim 2s infinite ease-in-out;
+      transform-origin: center;
+    }
+
+    .pulse-node:nth-child(2) { animation-delay: 0.4s; }
+    .pulse-node:nth-child(3) { animation-delay: 0.8s; }
+    .pulse-node:nth-child(4) { animation-delay: 1.2s; }
+
+    @keyframes pulseNodeAnim {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.4); opacity: 1; filter: drop-shadow(0 0 6px #00f0ff); }
+    }
+
+    .synapse-path {
+      stroke-dasharray: 6 6;
+      animation: synapseFlow 4s linear infinite;
+    }
+
+    @keyframes synapseFlow {
+      to { stroke-dashoffset: -48; }
+    }
+
+    .lottie-card:hover .synapse-path {
+      stroke: var(--neon-cyan);
+      animation-duration: 1.5s;
+    }
+
+    .lottie-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .lottie-caption {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       2. ABOUT ME SECTION
+       ========================================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+    }
+
+    .about-narrative {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .about-paragraph {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.75;
+    }
+
+    .about-paragraph strong {
+      color: var(--text-primary);
+    }
+
+    .about-stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .stat-mini-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.25rem;
+      transition: var(--transition-med);
+    }
+
+    .stat-mini-card:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.04);
+      transform: translateY(-3px);
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 0.35rem;
+    }
+
+    .stat-subtext {
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      margin-top: 0.2rem;
+    }
+
+    /* Futuristic Terminal Simulation */
+    .terminal-card {
+      background: #050914;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 240, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .terminal-header {
+      background: #090f20;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .terminal-dots {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .terminal-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ef4444; }
+    .dot-amber { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .terminal-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #94a3b8;
+      overflow-x: auto;
+    }
+
+    .terminal-command {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .terminal-prompt { color: var(--neon-cyan); }
+    .terminal-json-key { color: #38bdf8; }
+    .terminal-json-string { color: #a7f3d0; }
+    .terminal-json-arr { color: #c084fc; }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background: var(--neon-cyan);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    /* ==========================================================================
+       3. LEARNING JOURNEY SECTION
+       ========================================================================== */
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .journey-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2.25rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition-med);
+    }
+
+    .journey-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--card-accent, var(--neon-cyan)), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .journey-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--card-accent, var(--neon-cyan));
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--card-glow, var(--neon-cyan-glow));
+    }
+
+    .journey-card:hover::before {
+      opacity: 1;
+    }
+
+    .journey-card.python-card {
+      --card-accent: #38bdf8;
+      --card-glow: rgba(56, 189, 248, 0.25);
+    }
+
+    .journey-card.systems-card {
+      --card-accent: #a855f7;
+      --card-glow: rgba(168, 85, 247, 0.25);
+    }
+
+    .journey-card.ai-card {
+      --card-accent: #00f0ff;
+      --card-glow: rgba(0, 240, 255, 0.25);
+    }
+
+    .journey-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .journey-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      transition: transform var(--transition-med);
+    }
+
+    .journey-card:hover .journey-icon-wrap {
+      transform: scale(1.15) rotate(5deg);
+      border-color: var(--card-accent);
+    }
+
+    .journey-phase-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--card-accent);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.3rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .journey-card-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+
+    .journey-card-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .journey-breakdown {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .journey-breakdown-item {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .journey-breakdown-item::before {
+      content: '▹';
+      color: var(--card-accent);
+      font-size: 0.85rem;
+    }
+
+    .institution-banner {
+      margin-top: 2.5rem;
+      background: linear-gradient(135deg, rgba(20, 32, 65, 0.8), rgba(10, 16, 35, 0.9));
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.1);
+    }
+
+    .institution-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.35rem;
+    }
+
+    .institution-info p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .institution-badge {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--neon-purple);
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 0.6rem 1.25rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+
+    /* ==========================================================================
+       4. SKILLS SECTION
+       ========================================================================== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .skill-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition-med);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+    }
+
+    .skill-card.technical:hover {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 30px var(--neon-cyan-glow);
+    }
+
+    .skill-card.human:hover {
+      border-color: var(--neon-purple);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 30px var(--neon-purple-glow);
+    }
+
+    .skill-category-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-tech {
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+    }
+
+    .badge-interpersonal {
+      background: rgba(168, 85, 247, 0.1);
+      color: var(--neon-purple);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+
+    .skill-name {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+
+    .skill-code-block {
+      background: #060a16;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: #94a3b8;
+    }
+
+    .code-comment { color: #64748b; }
+    .code-keyword { color: #f43f5e; font-weight: 600; }
+    .code-func { color: #38bdf8; }
+    .code-string { color: #a7f3d0; }
+    .code-var { color: #f8fafc; }
+
+    .listening-visualizer {
+      background: #060a16;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .visualizer-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--neon-purple);
+    }
+
+    .sound-bars-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      height: 48px;
+    }
+
+    .sound-bar {
+      width: 4px;
+      background: linear-gradient(180deg, var(--neon-purple), var(--neon-cyan));
+      border-radius: 4px;
+      animation: soundWave 1.4s ease-in-out infinite alternate;
+    }
+
+    .sound-bar:nth-child(1) { height: 16px; animation-delay: 0.1s; }
+    .sound-bar:nth-child(2) { height: 28px; animation-delay: 0.3s; }
+    .sound-bar:nth-child(3) { height: 44px; animation-delay: 0.6s; }
+    .sound-bar:nth-child(4) { height: 20px; animation-delay: 0.2s; }
+    .sound-bar:nth-child(5) { height: 48px; animation-delay: 0.5s; }
+    .sound-bar:nth-child(6) { height: 32px; animation-delay: 0.4s; }
+    .sound-bar:nth-child(7) { height: 40px; animation-delay: 0.7s; }
+    .sound-bar:nth-child(8) { height: 22px; animation-delay: 0.25s; }
+    .sound-bar:nth-child(9) { height: 36px; animation-delay: 0.55s; }
+    .sound-bar:nth-child(10) { height: 18px; animation-delay: 0.15s; }
+
+    @keyframes soundWave {
+      0% { transform: scaleY(0.3); opacity: 0.5; }
+      100% { transform: scaleY(1); opacity: 1; }
+    }
+
+    /* ==========================================================================
+       5. HOBBIES SECTION: CALM ANIMATED LIFESTYLE VIEWPORTS
+       Custom pure SVG + CSS animations featuring a person lifting weights & swimming
+       with serene, peaceful and rhythmic motion
+       ========================================================================== */
+    .hobbies-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .hobby-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 2.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition-med);
+    }
+
+    .hobby-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
+    }
+
+    .hobby-card.gym:hover {
+      border-color: var(--neon-orange);
+      box-shadow: 0 0 35px rgba(249, 115, 22, 0.25);
+    }
+
+    .hobby-card.family:hover {
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 35px rgba(236, 72, 153, 0.25);
+    }
+
+    .hobby-card.swimming:hover {
+      border-color: #06b6d4;
+      box-shadow: 0 0 35px rgba(6, 182, 212, 0.25);
+    }
+
+    .hobby-card.skating:hover {
+      border-color: var(--neon-purple);
+      box-shadow: 0 0 35px rgba(168, 85, 247, 0.25);
+    }
+
+    .hobby-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .hobby-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .hobby-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .hobby-name {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .hobby-state-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    /* Animated Viewport for Pure SVG Illustrations */
+    .hobby-anim-viewport {
+      width: 100%;
+      height: 160px;
+      border-radius: 16px;
+      background: #040816;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hobby-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hobby-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .hobby-pill {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      align-self: flex-start;
+    }
+
+    /* ==========================================================================
+       WEIGHT LIFTING ANIMATION (CALM, STEADY, RHYTHMIC CADENCE)
+       ========================================================================== */
+    .lifter-motion-group {
+      animation: calmWeightLift 4.6s ease-in-out infinite;
+      transform-origin: 140px 92px;
+    }
+
+    @keyframes calmWeightLift {
+      0% {
+        transform: translateY(16px);
+      }
+      30% {
+        transform: translateY(-12px);
+      }
+      55% {
+        transform: translateY(-12px);
+      }
+      82% {
+        transform: translateY(16px);
+      }
+      100% {
+        transform: translateY(16px);
+      }
+    }
+
+    .calm-ambient-pulse {
+      animation: ambientPulse 4.6s ease-in-out infinite;
+      transform-origin: 140px 75px;
+    }
+
+    @keyframes ambientPulse {
+      0%, 100% { transform: scale(0.9); opacity: 0.35; }
+      35%, 65% { transform: scale(1.22); opacity: 0.9; }
+    }
+
+    .plate-glow-ring {
+      animation: plateGlowSpin 8s linear infinite;
+      transform-origin: center;
+    }
+
+    @keyframes plateGlowSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .zen-dust-1 { animation: zenFloat 3.8s ease-in-out infinite alternate; }
+    .zen-dust-2 { animation: zenFloat 4.6s ease-in-out infinite alternate -1.5s; }
+    .zen-dust-3 { animation: zenFloat 5.2s ease-in-out infinite alternate -2.8s; }
+
+    @keyframes zenFloat {
+      0% { transform: translateY(0); opacity: 0.2; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-16px); opacity: 0.1; }
+    }
+
+    /* ==========================================================================
+       SWIMMING ANIMATION (SERENE HYDRODYNAMIC GLIDE & GENTLE RIPPLES)
+       ========================================================================== */
+    .swimmer-calm-group {
+      animation: calmSwimmerGlide 4.4s ease-in-out infinite;
+      transform-origin: 120px 76px;
+    }
+
+    @keyframes calmSwimmerGlide {
+      0% {
+        transform: translateY(0px) rotate(-1.5deg);
+      }
+      50% {
+        transform: translateY(6px) rotate(1.5deg);
+      }
+      100% {
+        transform: translateY(0px) rotate(-1.5deg);
+      }
+    }
+
+    .swim-arm-stroke {
+      animation: calmArmStroke 4.4s ease-in-out infinite;
+      transform-origin: 125px 76px;
+    }
+
+    @keyframes calmArmStroke {
+      0% {
+        transform: rotate(0deg);
+      }
+      40% {
+        transform: rotate(-18deg) translateY(-4px);
+      }
+      70% {
+        transform: rotate(5deg) translateY(2px);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+
+    .swim-leg-top {
+      animation: calmFlutterTop 1.5s ease-in-out infinite alternate;
+      transform-origin: 82px 78px;
+    }
+    .swim-leg-bottom {
+      animation: calmFlutterBottom 1.5s ease-in-out infinite alternate;
+      transform-origin: 82px 78px;
+    }
+
+    @keyframes calmFlutterTop {
+      0% { transform: rotate(-6deg); }
+      100% { transform: rotate(6deg); }
+    }
+
+    @keyframes calmFlutterBottom {
+      0% { transform: rotate(6deg); }
+      100% { transform: rotate(-6deg); }
+    }
+
+    .calm-wave-back {
+      animation: calmWaveMove 10s linear infinite;
+    }
+    .calm-wave-front {
+      animation: calmWaveMove 6.5s linear infinite;
+    }
+
+    @keyframes calmWaveMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-120px); }
+    }
+
+    .swim-bubble-1 { animation: calmBubbleRise 3s ease-out infinite; }
+    .swim-bubble-2 { animation: calmBubbleRise 3.6s ease-out infinite -1s; }
+    .swim-bubble-3 { animation: calmBubbleRise 4.2s ease-out infinite -2s; }
+    .swim-bubble-4 { animation: calmBubbleRise 2.8s ease-out infinite -0.5s; }
+
+    @keyframes calmBubbleRise {
+      0% { transform: translate(0, 0); opacity: 0; }
+      30% { opacity: 0.8; }
+      100% { transform: translate(-25px, -24px); opacity: 0; }
+    }
+
+    .ripple-bow-1 {
+      animation: calmBowRipple 2.8s ease-out infinite;
+      transform-origin: 205px 73px;
+    }
+    .ripple-bow-2 {
+      animation: calmBowRipple 2.8s ease-out infinite 1.4s;
+      transform-origin: 205px 73px;
+    }
+
+    @keyframes calmBowRipple {
+      0% { r: 4px; opacity: 0.7; }
+      100% { r: 24px; opacity: 0; }
+    }
+
+    /* Family & Skating Ambient Keyframes */
+    .family-hearth-glow {
+      animation: hearthBreathe 4s ease-in-out infinite alternate;
+      transform-origin: 140px 75px;
+    }
+    @keyframes hearthBreathe {
+      0% { transform: scale(0.92); opacity: 0.5; }
+      100% { transform: scale(1.18); opacity: 1; }
+    }
+
+    .skater-glide-motion {
+      animation: skaterGlide 3.8s ease-in-out infinite alternate;
+      transform-origin: 140px 80px;
+    }
+    @keyframes skaterGlide {
+      0% { transform: translateX(-14px) rotate(-1deg); }
+      100% { transform: translateX(14px) rotate(1.5deg); }
+    }
+
+    .wheel-spin {
+      animation: wheelTurn 1.8s linear infinite;
+      transform-origin: center;
+    }
+    @keyframes wheelTurn {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ==========================================================================
+       6. "MY WHY" SECTION (THE EMOTIONAL NORTH STAR)
+       ========================================================================== */
+    .why-section {
+      padding: 7rem 0;
+    }
+
+    .why-shrine {
+      position: relative;
+      background: radial-gradient(circle at 50% 0%, rgba(20, 35, 75, 0.8) 0%, rgba(7, 13, 30, 0.95) 75%);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 32px;
+      padding: 4.5rem 3rem;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 240, 255, 0.15);
+    }
+
+    .why-shrine::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 32px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--neon-cyan), transparent 50%, var(--neon-purple));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .quote-mark {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--neon-cyan);
+      opacity: 0.4;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .why-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.8vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      max-width: 900px;
+      margin: 0 auto 2rem auto;
+      text-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+    }
+
+    .why-quote span.gradient-word {
+      background: linear-gradient(135deg, var(--neon-cyan), #ffffff, var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .why-elaboration {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 720px;
+      margin: 0 auto 2.5rem auto;
+      line-height: 1.8;
+    }
+
+    .why-values-ribbon {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    .value-chip {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.4rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      transition: all var(--transition-fast);
+    }
+
+    .value-chip:hover {
+      background: rgba(0, 240, 255, 0.1);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px var(--neon-cyan-glow);
+    }
+
+    /* ==========================================================================
+       7. CLOSING & FOOTER SECTION
+       ========================================================================== */
+    .closing-section {
+      padding: 5rem 0 3rem 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .closing-card {
+      background: linear-gradient(180deg, rgba(13, 22, 45, 0.6) 0%, rgba(5, 9, 20, 0.9) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 28px;
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      margin-bottom: 4rem;
+    }
+
+    .closing-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    }
+
+    .closing-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .closing-subtext {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+
+    .contact-channels {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    .channel-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.85rem 1.5rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      transition: all var(--transition-med);
+    }
+
+    .channel-pill:hover {
+      background: rgba(0, 240, 255, 0.08);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px var(--neon-cyan-glow);
+    }
+
+    /* Footer Credits & Signature */
+    .site-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-identity {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .footer-top-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      padding: 0.45rem 0.95rem;
+      border-radius: 8px;
+      transition: all var(--transition-fast);
+    }
+
+    .footer-top-btn:hover {
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE DESIGN (TABLETS & MOBILE PHONES)
+       ========================================================================== */
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        text-align: center;
+      }
+
+      .hero-content {
+        align-items: center;
+      }
+
+      .hero-hud-pills {
+        justify-content: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .lottie-showcase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .journey-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hobbies-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .institution-banner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        width: calc(100% - 2rem);
+        padding: 0.75rem 1.25rem;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: calc(100% + 0.75rem);
+        left: 0;
+        right: 0;
+        background: rgba(7, 13, 30, 0.96);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--border-subtle);
+        border-radius: 20px;
+        padding: 1.5rem;
+        flex-direction: column;
+        gap: 1.25rem;
+        display: none;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      }
+
+      .nav-toggle-label {
+        display: flex;
+      }
+
+      .nav-toggle-input:checked ~ .nav-menu {
+        display: flex;
+      }
+
+      .nav-toggle-input:checked ~ .nav-toggle-label .nav-toggle-bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .nav-toggle-input:checked ~ .nav-toggle-label .nav-toggle-bar:nth-child(2) {
+        opacity: 0;
+      }
+      .nav-toggle-input:checked ~ .nav-toggle-label .nav-toggle-bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      .nav-badge-status {
+        display: none;
+      }
+
+      .hologram-stage {
+        width: 100%;
+        max-width: 320px;
+        height: 380px;
+      }
+
+      .satellite-badge {
+        display: none;
+      }
+
+      .why-shrine {
+        padding: 3rem 1.5rem;
+      }
+
+      .closing-card {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .site-footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* ==========================================================================
+       ACCESSIBILITY: REDUCED MOTION SUPPORT
+       ========================================================================== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .startup-screen {
+        display: none !important;
+      }
+
+      .nebula-grid,
+      .nebula-orb,
+      .orbit-ring,
+      .hologram-core,
+      .scan-line,
+      .satellite-badge,
+      .sound-bar,
+      .marquee-track,
+      .marquee-track-reverse,
+      .lifter-motion-group,
+      .swimmer-calm-group,
+      .calm-ambient-pulse,
+      .calm-wave-back,
+      .calm-wave-front {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       STARTUP ANIMATION OVERLAY (INITIALIZING... PROTOCOL)
+       Pure CSS cinematic boot terminal sequence that seamlessly dissolves
+       ========================================================================== -->
+  <div class="startup-screen" aria-hidden="true">
+    <div class="startup-grid-overlay"></div>
+    <div class="startup-scanline"></div>
+
+    <div class="startup-terminal-box">
+      <div class="startup-status-header">
+        <div class="startup-title-tag">
+          <span class="startup-blinker"></span>
+          <span>BOOT_PROTOCOL // NST_CS_AI</span>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
+          v2026.10
+        </div>
+      </div>
+
+      <div class="startup-big-message">
+        <span class="anim-text">Initializing System...</span>
+      </div>
+      <div class="startup-subhead">
+        Loading identity matrix for <strong>PARAS CHOUDHARY</strong>
+      </div>
+
+      <div class="startup-progress-track">
+        <div class="startup-progress-fill"></div>
+      </div>
+
+      <div class="startup-logs-stream">
+        <div class="startup-log-line">
+          <span class="log-badge-ok">[OK]</span>
+          <span>CORE KERNEL: Newton School of Technology (Rishihood University)</span>
+        </div>
+        <div class="startup-log-line">
+          <span class="log-badge-ok">[OK]</span>
+          <span>LEARNING VECTORS: Python • Computer Systems • Artificial Intelligence</span>
+        </div>
+        <div class="startup-log-line">
+          <span class="log-badge-ok">[OK]</span>
+          <span>GEOGRAPHIC NODE: Karnal, Haryana, India (29.68° N, 76.99° E)</span>
+        </div>
+        <div class="startup-log-line">
+          <span class="log-badge-ok">[READY]</span>
+          <span>SYSTEM ONLINE • PROCEEDING TO USER INTERFACE...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PROGRESS TRACKER (TOP OF VIEWPORT)
+       Fills up seamlessly as the user scrolls through the portfolio
+       ========================================================================== -->
+  <div class="viewport-progress-track" aria-hidden="true">
+    <div class="viewport-progress-bar"></div>
+  </div>
+
+  <!-- Ambient Cosmic Parallax Canvas & Animated Mesh Gradients -->
+  <div class="cosmic-canvas" aria-hidden="true">
+    <div class="nebula-grid parallax-slow"></div>
+    <div class="nebula-orb nebula-orb-1 parallax-fast"></div>
+    <div class="nebula-orb nebula-orb-2 parallax-slow"></div>
+    <div class="nebula-orb nebula-orb-3 parallax-fast"></div>
+  </div>
+
+  <!-- Fixed Glass Navigation Bar -->
+  <header class="navbar">
+    <a href="#hero" class="brand-signature">
+      <div class="brand-monogram">PC</div>
+      <span>PARAS CHOUDHARY</span>
+    </a>
+
+    <!-- Pure CSS Toggle Checkbox for Mobile Navigation -->
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-label="Toggle navigation menu">
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </label>
+
+    <ul class="nav-menu">
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#learning" class="nav-link">Learning</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#interactive" class="nav-link">Vectors</a></li>
+      <li><a href="#hobbies" class="nav-link">Hobbies</a></li>
+      <li><a href="#why" class="nav-link">My Why</a></li>
+      <li><a href="#connect" class="nav-link">Connect</a></li>
+    </ul>
+
+    <div class="nav-badge-status">
+      <span class="pulse-dot"></span>
+      <span>NST // RISHIHOOD</span>
+    </div>
+  </header>
+
+  <div class="site-wrapper">
+
+    <!-- ==========================================================================
+         1. CINEMATIC HERO SECTION
+         ========================================================================== -->
+    <section id="hero" class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-content scroll-reveal">
+          
+          <div class="hero-hud-pills">
+            <span class="hud-pill">
+              <span class="pulse-dot"></span>
+              CS &amp; AI UNDERGRADUATE
+            </span>
+            <span class="hud-pill location-pill">
+              📍 KARNAL, HARYANA, INDIA
+            </span>
+          </div>
+
+          <div class="hero-title-group">
+            <p class="hero-eyebrow">PORTFOLIO PROTOCOL // 2026</p>
+            <h1 class="hero-headline">
+              Hi, I'm <br>
+              <span class="highlight">Paras Choudhary</span>
+            </h1>
+          </div>
+
+          <p class="hero-lead">
+            Computer Science &amp; Artificial Intelligence student at 
+            <strong>Newton School of Technology, Rishihood University</strong>. 
+            Currently architecting a disciplined foundation across 
+            <strong>Python</strong>, <strong>Systems</strong>, and <strong>AI</strong>.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#about" class="btn-cyber-primary">
+              <span>Explore My World</span>
+              <span>↓</span>
+            </a>
+            <a href="#why" class="btn-cyber-ghost">
+              <span>The Core Purpose</span>
+              <span>✦</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Futuristic Holographic Cyber Display -->
+        <div class="hero-hologram-wrapper scroll-reveal">
+          
+          <div class="satellite-badge satellite-badge-1">
+            <span>🎓</span>
+            <span>Newton School of Tech</span>
+          </div>
+
+          <div class="satellite-badge satellite-badge-2">
+            <span>⚡</span>
+            <span>Focus: Python &amp; Systems</span>
+          </div>
+
+          <div class="hologram-stage">
+            <div class="orbit-ring orbit-ring-1"></div>
+            <div class="orbit-ring orbit-ring-2"></div>
+            <div class="scan-line"></div>
+
+            <div class="hologram-core">
+              <span class="core-initials">PC</span>
+              <span class="core-spec">SYSTEM ACTIVE</span>
+            </div>
+
+            <div class="hologram-hud-meta">
+              <h2 class="hud-name">PARAS CHOUDHARY</h2>
+              <p class="hud-role">CS &amp; AI INNOVATOR</p>
+              <p class="hud-location">
+                <span>🛰️</span> 29.6857° N, 76.9905° E • Karnal
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         INFINITE MARQUEE #1: TECHNICAL AND ACADEMIC TICKER
+         ========================================================================== -->
+    <div class="marquee-container" aria-label="Key highlights marquee">
+      <div class="marquee-track">
+        <span class="marquee-badge"><span class="marquee-icon">🐍</span> PYTHON PROGRAMMING</span>
+        <span class="marquee-badge"><span class="marquee-icon">⚙️</span> SYSTEMS ARCHITECTURE</span>
+        <span class="marquee-badge"><span class="marquee-icon">🧠</span> ARTIFICIAL INTELLIGENCE</span>
+        <span class="marquee-badge"><span class="marquee-icon">🏛️</span> NEWTON SCHOOL OF TECHNOLOGY</span>
+        <span class="marquee-badge"><span class="marquee-icon">👂</span> ACTIVE LISTENING SUPERPOWER</span>
+        <span class="marquee-badge"><span class="marquee-icon">📍</span> KARNAL, HARYANA</span>
+        <span class="marquee-badge"><span class="marquee-icon">🎓</span> RISHIHOOD UNIVERSITY</span>
+        <span class="marquee-badge"><span class="marquee-icon">⚡</span> CONTINUOUS DISCIPLINE</span>
+
+        <!-- Duplicated seamlessly for continuous 360 loop -->
+        <span class="marquee-badge"><span class="marquee-icon">🐍</span> PYTHON PROGRAMMING</span>
+        <span class="marquee-badge"><span class="marquee-icon">⚙️</span> SYSTEMS ARCHITECTURE</span>
+        <span class="marquee-badge"><span class="marquee-icon">🧠</span> ARTIFICIAL INTELLIGENCE</span>
+        <span class="marquee-badge"><span class="marquee-icon">🏛️</span> NEWTON SCHOOL OF TECHNOLOGY</span>
+        <span class="marquee-badge"><span class="marquee-icon">👂</span> ACTIVE LISTENING SUPERPOWER</span>
+        <span class="marquee-badge"><span class="marquee-icon">📍</span> KARNAL, HARYANA</span>
+        <span class="marquee-badge"><span class="marquee-icon">🎓</span> RISHIHOOD UNIVERSITY</span>
+        <span class="marquee-badge"><span class="marquee-icon">⚡</span> CONTINUOUS DISCIPLINE</span>
+      </div>
+    </div>
+
+    <!-- Dynamic Section Transition Glow Line -->
+    <div class="section-transition-glow"></div>
+
+    <!-- ==========================================================================
+         2. ABOUT ME SECTION (SCROLL-TRIGGERED REVEAL)
+         ========================================================================== -->
+    <section id="about">
+      <div class="section-header scroll-reveal">
+        <div class="section-tag">01 // ORIGIN &amp; IDENTITY</div>
+        <h2 class="section-title">Rooted in Karnal, <span class="text-gradient">Focused on Mastery</span></h2>
+        <p class="section-subtitle">
+          Building the mindset, computational logic, and character needed to solve real-world problems.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <div class="glass-card about-narrative scroll-reveal">
+          <p class="about-paragraph">
+            I am a passionate <strong>Computer Science and Artificial Intelligence student</strong> at 
+            <strong>Newton School of Technology, Rishihood University</strong>, hailing from 
+            <strong>Karnal, Haryana, India</strong>.
+          </p>
+          <p class="about-paragraph">
+            My journey is defined by structured discipline and genuine curiosity. Rather than rushing into shallow trends, I believe in mastering the core fundamentals of computing—from algorithmic logic in Python to how machines execute instructions at the systems layer.
+          </p>
+          <p class="about-paragraph">
+            Whether I am breaking down complex problems in the computer lab or pushing my physical limits at the gym, I bring relentless consistency, humility, and an eagerness to absorb every lesson from mentors and peers.
+          </p>
+
+          <div class="about-stat-row">
+            <div class="stat-mini-card">
+              <div class="stat-label">Academic Base</div>
+              <div class="stat-value">CS &amp; AI</div>
+              <div class="stat-subtext">Newton School of Tech</div>
+            </div>
+            <div class="stat-mini-card">
+              <div class="stat-label">Hometown</div>
+              <div class="stat-value">Karnal</div>
+              <div class="stat-subtext">Haryana, India</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulated Cyber Terminal -->
+        <div class="terminal-card scroll-reveal">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot dot-red"></span>
+              <span class="terminal-dot dot-amber"></span>
+              <span class="terminal-dot dot-green"></span>
+            </div>
+            <div class="terminal-title">paras@nst-core: ~/profile</div>
+            <div class="terminal-badge">SYS_INFO</div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-command">
+              <span class="terminal-prompt">paras@nst:~$</span>
+              <span>cat identity_matrix.json</span>
+            </div>
+            <pre><code>{
+  <span class="terminal-json-key">"name"</span>: <span class="terminal-json-string">"Paras Choudhary"</span>,
+  <span class="terminal-json-key">"location"</span>: <span class="terminal-json-string">"Karnal, Haryana, India"</span>,
+  <span class="terminal-json-key">"institution"</span>: <span class="terminal-json-string">"Newton School of Technology"</span>,
+  <span class="terminal-json-key">"university"</span>: <span class="terminal-json-string">"Rishihood University"</span>,
+  <span class="terminal-json-key">"major"</span>: <span class="terminal-json-string">"Computer Science & AI"</span>,
+  <span class="terminal-json-key">"learning"</span>: [
+    <span class="terminal-json-arr">"Python"</span>,
+    <span class="terminal-json-arr">"Systems Architecture"</span>,
+    <span class="terminal-json-arr">"Artificial Intelligence"</span>
+  ],
+  <span class="terminal-json-key">"core_superpower"</span>: <span class="terminal-json-string">"Active Listening"</span>,
+  <span class="terminal-json-key">"status"</span>: <span class="terminal-json-string">"Building &amp; Growing Daily"</span>
+}<span class="cursor-blink"></span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dynamic Section Transition Glow Line -->
+    <div class="section-transition-glow"></div>
+
+    <!-- ==========================================================================
+         3. LEARNING JOURNEY SECTION (SCROLL-TRIGGERED REVEAL)
+         ========================================================================== -->
+    <section id="learning">
+      <div class="section-header scroll-reveal">
+        <div class="section-tag">02 // ACADEMIC ROADMAP</div>
+        <h2 class="section-title">The Three Pillars of <span class="text-gradient">My Technical Ascent</span></h2>
+        <p class="section-subtitle">
+          A transparent look into what I am actively studying, practicing, and internalizing right now.
+        </p>
+      </div>
+
+      <div class="journey-grid">
+        
+        <!-- Pillar 1: Python -->
+        <div class="journey-card python-card scroll-reveal">
+          <div class="journey-card-header">
+            <div class="journey-icon-wrap">🐍</div>
+            <span class="journey-phase-tag">ACTIVE FOUNDATION</span>
+          </div>
+          <h3 class="journey-card-title">Python Programming</h3>
+          <p class="journey-card-desc">
+            Mastering clean syntax, data structures, control flow, functions, and modular problem-solving. Building intuitive coding habits to turn mathematical and algorithmic ideas into clean code.
+          </p>
+          <ul class="journey-breakdown">
+            <li class="journey-breakdown-item">Core Syntax &amp; Logic Building</li>
+            <li class="journey-breakdown-item">Data Structures &amp; Flow Control</li>
+            <li class="journey-breakdown-item">Algorithmic Problem-Solving</li>
+          </ul>
+        </div>
+
+        <!-- Pillar 2: Systems -->
+        <div class="journey-card systems-card scroll-reveal">
+          <div class="journey-card-header">
+            <div class="journey-icon-wrap">⚙️</div>
+            <span class="journey-phase-tag">CORE EXPLORATION</span>
+          </div>
+          <h3 class="journey-card-title">Computer Systems</h3>
+          <p class="journey-card-desc">
+            Understanding the architecture beneath high-level languages. Exploring how hardware, memory hierarchy, operating systems, and processors communicate to execute computations with precision.
+          </p>
+          <ul class="journey-breakdown">
+            <li class="journey-breakdown-item">Computational Architecture</li>
+            <li class="journey-breakdown-item">Memory &amp; Execution Principles</li>
+            <li class="journey-breakdown-item">Operating System Fundamentals</li>
+          </ul>
+        </div>
+
+        <!-- Pillar 3: AI -->
+        <div class="journey-card ai-card scroll-reveal">
+          <div class="journey-card-header">
+            <div class="journey-icon-wrap">🧠</div>
+            <span class="journey-phase-tag">FUTURE FRONTIER</span>
+          </div>
+          <h3 class="journey-card-title">Artificial Intelligence</h3>
+          <p class="journey-card-desc">
+            Diving into the mathematics, logic, and models that empower computers to perceive, learn, and make decisions. Laying the theoretical groundwork for machine learning and neural architectures.
+          </p>
+          <ul class="journey-breakdown">
+            <li class="journey-breakdown-item">Mathematical &amp; Statistical Roots</li>
+            <li class="journey-breakdown-item">Pattern Recognition Concepts</li>
+            <li class="journey-breakdown-item">AI Ethics &amp; Real-World Utility</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Campus Highlight Callout -->
+      <div class="institution-banner scroll-reveal">
+        <div class="institution-info">
+          <h3>Newton School of Technology // Rishihood University</h3>
+          <p>Immersed in an elite curriculum engineered to train the next wave of AI engineers, systems architects, and technical leaders.</p>
+        </div>
+        <div class="institution-badge">
+          CAMPUS RESIDENT • B.TECH CS &amp; AI
+        </div>
+      </div>
+    </section>
+
+    <!-- Dynamic Section Transition Glow Line -->
+    <div class="section-transition-glow"></div>
+
+    <!-- ==========================================================================
+         4. SKILLS SECTION (SCROLL-TRIGGERED REVEAL)
+         ========================================================================== -->
+    <section id="skills">
+      <div class="section-header scroll-reveal">
+        <div class="section-tag">03 // CORE ARSENAL</div>
+        <h2 class="section-title">Honest Skills, <span class="text-gradient">Relentless Execution</span></h2>
+        <p class="section-subtitle">
+          Great technologists are not made of buzzwords. They are defined by strong fundamentals, honesty about where they stand, and the humility to listen.
+        </p>
+      </div>
+
+      <div class="skills-grid">
+        
+        <!-- Technical Skill: Basic Python -->
+        <div class="skill-card technical scroll-reveal">
+          <span class="skill-category-badge badge-tech">TECHNICAL ARSENAL</span>
+          <h3 class="skill-name">Basic Python Programming</h3>
+          <p class="skill-desc">
+            Solid grasp of Python's fundamental building blocks: variables, conditional branching, loops, lists, dictionaries, and functional decomposition. Continuously practicing daily to strengthen algorithmic fluency.
+          </p>
+
+          <div class="skill-code-block">
+            <span class="code-comment"># Daily engineering routine</span><br>
+            <span class="code-keyword">def</span> <span class="code-func">daily_growth</span>(<span class="code-var">dedication</span>, <span class="code-var">curiosity</span>):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-var">skills</span> = []<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">while</span> <span class="code-var">dedication</span> &gt; <span class="code-string">0</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-var">skills</span>.<span class="code-func">append</span>(<span class="code-string">"Continuous Improvement"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-func">sum_potential</span>(<span class="code-var">skills</span>)
+          </div>
+        </div>
+
+        <!-- Soft Skill: Active Listening -->
+        <div class="skill-card human scroll-reveal">
+          <span class="skill-category-badge badge-interpersonal">SUPERPOWER</span>
+          <h3 class="skill-name">Active Listening &amp; Empathy</h3>
+          <p class="skill-desc">
+            The rare art of listening before speaking and understanding before coding. Absorbing feedback without ego, asking clarifying questions, and aligning deeply with mentors, instructors, and peers to deliver real value.
+          </p>
+
+          <div class="listening-visualizer">
+            <div class="visualizer-label">
+              <span>ACOUSTIC ABSORPTION SPECTRUM</span>
+              <span>100% RECEPTIVE</span>
+            </div>
+            <div class="sound-bars-container">
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+              <span class="sound-bar"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Dynamic Section Transition Glow Line -->
+    <div class="section-transition-glow"></div>
+
+    <!-- ==========================================================================
+         IMMERSIVE LOTTIE-STYLE VECTOR GRAPHICS SHOWCASE
+         Lightweight, vector-based interactive graphics reacting to cursor movement & scroll
+         ========================================================================== -->
+    <section id="interactive">
+      <div class="section-header scroll-reveal">
+        <div class="section-tag">04 // VECTOR MICRO-INTERACTIONS</div>
+        <h2 class="section-title">Lottie-Style <span class="text-gradient">Interactive Vectors</span></h2>
+        <p class="section-subtitle">
+          Pure SVG vector graphics engineered with hardware-accelerated CSS animations. Silky 60fps, zero external JavaScript overhead, and delightfully reactive to your touch.
+        </p>
+      </div>
+
+      <div class="lottie-showcase-grid">
+        
+        <!-- Lottie Vector 1: The Neural Synaptic Matrix -->
+        <div class="lottie-card scroll-reveal">
+          <span class="lottie-card-badge">⚡ REACTIVE VECTOR ANIMATION</span>
+          <div class="lottie-stage">
+            <svg class="lottie-svg" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Animated Neural Mesh Paths -->
+              <path class="synapse-path" d="M30 80 Q 70 20, 100 80 T 170 80" stroke="rgba(0, 240, 255, 0.4)" stroke-width="2.5" fill="none"/>
+              <path class="synapse-path" d="M40 120 Q 90 140, 100 80 T 160 40" stroke="rgba(168, 85, 247, 0.4)" stroke-width="2" fill="none"/>
+              <path class="synapse-path" d="M50 40 Q 100 20, 150 120" stroke="rgba(236, 72, 153, 0.35)" stroke-width="1.8" fill="none"/>
+              
+              <!-- Orbital Target Ring -->
+              <circle cx="100" cy="80" r="48" stroke="rgba(0, 240, 255, 0.25)" stroke-width="1.5" stroke-dasharray="4 4" class="orbit-ring-1"/>
+              
+              <!-- Synaptic Nodes -->
+              <circle cx="100" cy="80" r="14" fill="url(#coreGrad)" class="pulse-node"/>
+              <circle cx="30" cy="80" r="7" fill="#00f0ff" class="pulse-node"/>
+              <circle cx="170" cy="80" r="7" fill="#a855f7" class="pulse-node"/>
+              <circle cx="100" cy="20" r="6" fill="#38bdf8" class="pulse-node"/>
+              <circle cx="100" cy="140" r="6" fill="#ec4899" class="pulse-node"/>
+
+              <!-- Gradient Definition -->
+              <defs>
+                <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#00f0ff"/>
+                  <stop offset="100%" stop-color="#a855f7"/>
+                </radialGradient>
+              </defs>
+            </svg>
+          </div>
+          <h3 class="lottie-title">Neural Synaptic Matrix</h3>
+          <p class="lottie-caption">
+            Hover to accelerate synaptic pulses. Illustrating the interconnected cognitive networks of Artificial Intelligence.
+          </p>
+        </div>
+
+        <!-- Lottie Vector 2: Active Resonance Compass -->
+        <div class="lottie-card scroll-reveal">
+          <span class="lottie-card-badge">🎧 ACOUSTIC EMPATHY SENSOR</span>
+          <div class="lottie-stage">
+            <svg class="lottie-svg" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Concentric Echo Waves -->
+              <circle cx="100" cy="80" r="62" stroke="rgba(168, 85, 247, 0.2)" stroke-width="1.5" stroke-dasharray="6 4" class="orbit-ring-1"/>
+              <circle cx="100" cy="80" r="44" stroke="rgba(0, 240, 255, 0.3)" stroke-width="2" class="orbit-ring-2"/>
+              <circle cx="100" cy="80" r="26" stroke="rgba(236, 72, 153, 0.4)" stroke-width="2"/>
+              
+              <!-- Core Receptor Beacon -->
+              <circle cx="100" cy="80" r="10" fill="#00f0ff" class="pulse-node"/>
+              <line x1="100" y1="20" x2="100" y2="140" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1"/>
+              <line x1="40" y1="80" x2="160" y2="80" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1"/>
+            </svg>
+          </div>
+          <h3 class="lottie-title">Acoustic Resonance Compass</h3>
+          <p class="lottie-caption">
+            Representing active listening, open receptivity, and directional empathy when collaborating with teams and mentors.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         INFINITE MARQUEE #2: PASSIONS & LIFE PRINCIPLES TICKER
+         ========================================================================== -->
+    <div class="marquee-container" aria-label="Passions and values marquee">
+      <div class="marquee-track marquee-track-reverse">
+        <span class="marquee-badge"><span class="marquee-icon">🏋️</span> GYM DISCIPLINE</span>
+        <span class="marquee-badge"><span class="marquee-icon">❤️</span> FAMILY BEDROCK</span>
+        <span class="marquee-badge"><span class="marquee-icon">🏊</span> SWIMMING ENDURANCE</span>
+        <span class="marquee-badge"><span class="marquee-icon">🛼</span> SKATING BALANCE</span>
+        <span class="marquee-badge"><span class="marquee-icon">🎯</span> FAMILY PRIDE</span>
+        <span class="marquee-badge"><span class="marquee-icon">💪</span> PROGRESSIVE OVERLOAD</span>
+        <span class="marquee-badge"><span class="marquee-icon">🌊</span> MENTAL CALMNESS</span>
+        <span class="marquee-badge"><span class="marquee-icon">💎</span> HUMBLE AMBITION</span>
+
+        <!-- Duplicated seamlessly for continuous 360 loop -->
+        <span class="marquee-badge"><span class="marquee-icon">🏋️</span> GYM DISCIPLINE</span>
+        <span class="marquee-badge"><span class="marquee-icon">❤️</span> FAMILY BEDROCK</span>
+        <span class="marquee-badge"><span class="marquee-icon">🏊</span> SWIMMING ENDURANCE</span>
+        <span class="marquee-badge"><span class="marquee-icon">🛼</span> SKATING BALANCE</span>
+        <span class="marquee-badge"><span class="marquee-icon">🎯</span> FAMILY PRIDE</span>
+        <span class="marquee-badge"><span class="marquee-icon">💪</span> PROGRESSIVE OVERLOAD</span>
+        <span class="marquee-badge"><span class="marquee-icon">🌊</span> MENTAL CALMNESS</span>
+        <span class="marquee-badge"><span class="marquee-icon">💎</span> HUMBLE AMBITION</span>
+      </div>
+    </div>
+
+    <!-- Dynamic Section Transition Glow Line -->
+    <div class="section-transition-glow"></div>
+
+    <!-- ==========================================================================
+         5. HOBBIES SECTION: CALM ANIMATED LIFESTYLE VIEWPORTS
+         Featuring animated person lifting weights & swimming with calm, peaceful motion
+         ========================================================================== -->
+    <section id="hobbies">
+      <div class="section-header scroll-reveal">
+        <div class="section-tag">05 // EQUILIBRIUM &amp; PASSIONS</div>
+        <h2 class="section-title">Beyond The Terminal: <span class="text-gradient">Discipline &amp; Life</span></h2>
+        <p class="section-subtitle">
+          How I recharge, maintain peak mental clarity, and stay rooted in physical calm and emotional balance.
+        </p>
+      </div>
+
+      <div class="hobbies-grid">
+        
+        <!-- Hobby 1: Gym (Calm Person Lifting Weights) -->
+        <div class="hobby-card gym scroll-reveal">
+          <div class="hobby-card-top">
+            <div class="hobby-title-group">
+              <div class="hobby-icon-badge">🏋️</div>
+              <h3 class="hobby-name">The Gym</h3>
+            </div>
+            <span class="hobby-state-badge">CALM CADENCE • 4.6s</span>
+          </div>
+
+          <!-- Pure CSS/SVG Zen Weight Lifter Animation -->
+          <div class="hobby-anim-viewport gym-anim-viewport">
+            <svg class="hobby-svg" viewBox="0 0 280 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="140" cy="75" r="55" fill="url(#gymZenGlow)" class="calm-ambient-pulse" />
+              <defs>
+                <radialGradient id="gymZenGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="rgba(249, 115, 22, 0.28)"/>
+                  <stop offset="100%" stop-color="rgba(249, 115, 22, 0)"/>
+                </radialGradient>
+                <linearGradient id="barbellGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#f97316"/>
+                  <stop offset="50%" stop-color="#fed7aa"/>
+                  <stop offset="100%" stop-color="#f97316"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Platform Floor Line -->
+              <line x1="20" y1="135" x2="260" y2="135" stroke="rgba(255, 255, 255, 0.12)" stroke-width="2" stroke-dasharray="4 4"/>
+              <ellipse cx="140" cy="135" rx="55" ry="6" fill="rgba(0, 0, 0, 0.45)"/>
+
+              <!-- Calming Floating Zen Particles -->
+              <circle cx="55" cy="95" r="1.5" fill="#f97316" class="zen-dust-1"/>
+              <circle cx="225" cy="80" r="1.5" fill="#f97316" class="zen-dust-2"/>
+              <circle cx="105" cy="45" r="1.2" fill="#fed7aa" class="zen-dust-3"/>
+
+              <!-- Grounded Legs (Calm, stable deadlift stance) -->
+              <path d="M123 135 L131 106 L137 90" stroke="#94a3b8" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M157 135 L149 106 L143 90" stroke="#94a3b8" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+              <!-- Dynamic Lifting Group: Person Lifting Weights Rhythmically -->
+              <g class="lifter-motion-group">
+                <!-- Head with Serene Gaze -->
+                <circle cx="140" cy="44" r="8.5" fill="#f1f5f9"/>
+                <!-- Spine / Torso in Strong Posture -->
+                <path d="M140 52 L140 88" stroke="#38bdf8" stroke-width="7" stroke-linecap="round"/>
+                <!-- Shoulder Girdle -->
+                <path d="M120 62 L160 62" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+                
+                <!-- Left Arm Gripping Bar -->
+                <path d="M120 62 L104 76 L88 84" stroke="#cbd5e1" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Right Arm Gripping Bar -->
+                <path d="M160 62 L176 76 L192 84" stroke="#cbd5e1" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <!-- Glowing Barbell Bar -->
+                <line x1="56" y1="84" x2="224" y2="84" stroke="url(#barbellGrad)" stroke-width="3.5" stroke-linecap="round"/>
+
+                <!-- Left Olympic Plates -->
+                <rect x="74" y="65" width="7" height="38" rx="2" fill="#f97316" stroke="#ffedd5" stroke-width="1"/>
+                <rect x="66" y="69" width="6" height="30" rx="2" fill="#ea580c"/>
+                <rect x="60" y="73" width="4" height="22" rx="1.5" fill="#c2410c"/>
+
+                <!-- Right Olympic Plates -->
+                <rect x="199" y="65" width="7" height="38" rx="2" fill="#f97316" stroke="#ffedd5" stroke-width="1"/>
+                <rect x="208" y="69" width="6" height="30" rx="2" fill="#ea580c"/>
+                <rect x="216" y="73" width="4" height="22" rx="1.5" fill="#c2410c"/>
+
+                <!-- Ambient Neon Energy Rings -->
+                <circle cx="77" cy="84" r="23" stroke="rgba(249, 115, 22, 0.45)" stroke-width="1" stroke-dasharray="3 3" class="plate-glow-ring"/>
+                <circle cx="203" cy="84" r="23" stroke="rgba(249, 115, 22, 0.45)" stroke-width="1" stroke-dasharray="3 3" class="plate-glow-ring"/>
+              </g>
+
+              <!-- Cadence Guidance Caption -->
+              <text x="140" y="24" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="rgba(249, 115, 22, 0.85)" letter-spacing="1">
+                CALM BREATHING • INHALE // EXHALE
+              </text>
+            </svg>
+          </div>
+
+          <p class="hobby-desc">
+            Iron discipline and resistance training. Pushing past mental barriers, staying physically robust, and embracing progressive overload with quiet, calm, unbroken focus.
+          </p>
+          <span class="hobby-pill">RESILIENCE &amp; CALM GRIT</span>
+        </div>
+
+        <!-- Hobby 2: Swimming (Calm Person Swimming in Water) -->
+        <div class="hobby-card swimming scroll-reveal">
+          <div class="hobby-card-top">
+            <div class="hobby-title-group">
+              <div class="hobby-icon-badge">🏊</div>
+              <h3 class="hobby-name">Swimming</h3>
+            </div>
+            <span class="hobby-state-badge">MEDITATIVE GLIDE • 4.4s</span>
+          </div>
+
+          <!-- Pure CSS/SVG Zen Swimmer Animation -->
+          <div class="hobby-anim-viewport swim-anim-viewport">
+            <svg class="hobby-svg" viewBox="0 0 280 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="280" height="150" rx="14" fill="url(#swimWaterBg)"/>
+              <defs>
+                <linearGradient id="swimWaterBg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="rgba(6, 182, 212, 0.08)"/>
+                  <stop offset="60%" stop-color="rgba(14, 116, 144, 0.22)"/>
+                  <stop offset="100%" stop-color="rgba(8, 47, 73, 0.45)"/>
+                </linearGradient>
+                <linearGradient id="swimmerBodyGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#00f0ff"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Calming Caustic Rays of Sunlight -->
+              <path d="M40 0 L70 150" stroke="rgba(0, 240, 255, 0.06)" stroke-width="12" stroke-linecap="round"/>
+              <path d="M120 0 L150 150" stroke="rgba(0, 240, 255, 0.08)" stroke-width="18" stroke-linecap="round"/>
+              <path d="M210 0 L235 150" stroke="rgba(0, 240, 255, 0.06)" stroke-width="14" stroke-linecap="round"/>
+
+              <!-- Undulating Water Surface Currents -->
+              <path class="calm-wave-back" d="M-40 65 Q 20 55, 80 65 T 200 65 T 320 65 T 440 65" stroke="rgba(6, 182, 212, 0.3)" stroke-width="2" fill="none"/>
+              <path class="calm-wave-front" d="M-40 78 Q 30 70, 100 78 T 240 78 T 380 78" stroke="rgba(0, 240, 255, 0.45)" stroke-width="2.5" fill="none"/>
+
+              <!-- Serene Gliding Swimmer -->
+              <g class="swimmer-calm-group">
+                <!-- Water Wake Behind Swimmer -->
+                <path d="M50 78 C 65 77, 75 79, 85 78" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1.5" stroke-dasharray="2 3"/>
+
+                <!-- Swimmer Legs & Flutter Kick -->
+                <path d="M82 78 L60 74 L42 72" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round" class="swim-leg-top"/>
+                <path d="M82 78 L60 82 L44 85" stroke="#0284c7" stroke-width="4" stroke-linecap="round" class="swim-leg-bottom"/>
+
+                <!-- Swimmer Torso Gliding Through Fluid Current -->
+                <ellipse cx="112" cy="77" rx="28" ry="7.5" fill="url(#swimmerBodyGrad)" transform="rotate(-3, 112, 77)"/>
+
+                <!-- Head with Sleek Goggles -->
+                <circle cx="144" cy="74" r="7" fill="#f8fafc"/>
+                <rect x="144" y="72" width="6" height="3" rx="1.5" fill="#00f0ff"/>
+
+                <!-- Forward Reaching Lead Arm -->
+                <path d="M135 76 L175 74 L205 73" stroke="#00f0ff" stroke-width="4" stroke-linecap="round"/>
+
+                <!-- Stroke Arm Pulling with Grace -->
+                <path d="M125 76 Q 140 50, 160 62 L 175 73" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" class="swim-arm-stroke"/>
+
+                <!-- Calming Bioluminescent Bubbles -->
+                <circle cx="130" cy="85" r="2.5" fill="rgba(255, 255, 255, 0.6)" class="swim-bubble-1"/>
+                <circle cx="105" cy="89" r="2" fill="rgba(0, 240, 255, 0.7)" class="swim-bubble-2"/>
+                <circle cx="75" cy="84" r="1.8" fill="rgba(255, 255, 255, 0.5)" class="swim-bubble-3"/>
+                <circle cx="155" cy="82" r="1.5" fill="rgba(0, 240, 255, 0.8)" class="swim-bubble-4"/>
+              </g>
+
+              <!-- Bow Caustic Ripples -->
+              <circle cx="205" cy="73" r="8" stroke="rgba(0, 240, 255, 0.4)" stroke-width="1.2" class="ripple-bow-1"/>
+              <circle cx="205" cy="73" r="16" stroke="rgba(0, 240, 255, 0.2)" stroke-width="1" class="ripple-bow-2"/>
+
+              <!-- Guidance Caption -->
+              <text x="140" y="24" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="rgba(0, 240, 255, 0.85)" letter-spacing="1">
+                SERENE WATER GLIDE • MEDITATION IN MOTION
+              </text>
+            </svg>
+          </div>
+
+          <p class="hobby-desc">
+            Rhythmic cardiovascular endurance and meditation in motion. Gliding through water clears my head, regulates breathing, and sharpens stamina with natural fluidity.
+          </p>
+          <span class="hobby-pill">FLUIDITY &amp; PEACEFUL FOCUS</span>
+        </div>
+
+        <!-- Hobby 3: Family (Hearth & Eternal Anchor) -->
+        <div class="hobby-card family scroll-reveal">
+          <div class="hobby-card-top">
+            <div class="hobby-title-group">
+              <div class="hobby-icon-badge">❤️</div>
+              <h3 class="hobby-name">Family Time</h3>
+            </div>
+            <span class="hobby-state-badge">ETERNAL BEDROCK</span>
+          </div>
+
+          <!-- Pure CSS/SVG Family Hearth Constellation -->
+          <div class="hobby-anim-viewport">
+            <svg class="hobby-svg" viewBox="0 0 280 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="140" cy="75" r="45" fill="url(#hearthGrad)" class="family-hearth-glow"/>
+              <defs>
+                <radialGradient id="hearthGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="rgba(236, 72, 153, 0.35)"/>
+                  <stop offset="100%" stop-color="rgba(236, 72, 153, 0)"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Constellation Ties -->
+              <line x1="140" y1="50" x2="90" y2="90" stroke="rgba(236, 72, 153, 0.3)" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="140" y1="50" x2="190" y2="90" stroke="rgba(236, 72, 153, 0.3)" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="90" y1="90" x2="140" y2="115" stroke="rgba(236, 72, 153, 0.3)" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="190" y1="90" x2="140" y2="115" stroke="rgba(236, 72, 153, 0.3)" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+              <!-- Central Beating Hearth Core -->
+              <circle cx="140" cy="75" r="16" fill="#ec4899" class="pulse-node"/>
+              <circle cx="140" cy="50" r="7" fill="#fbbf24" class="pulse-node"/>
+              <circle cx="90" cy="90" r="7" fill="#38bdf8" class="pulse-node"/>
+              <circle cx="190" cy="90" r="7" fill="#c084fc" class="pulse-node"/>
+              <circle cx="140" cy="115" r="7" fill="#f43f5e" class="pulse-node"/>
+
+              <text x="140" y="24" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="rgba(236, 72, 153, 0.85)" letter-spacing="1">
+                FOUNDATIONAL HARMONY • UNCONDITIONAL LOVE
+              </text>
+            </svg>
+          </div>
+
+          <p class="hobby-desc">
+            My emotional anchor and greatest joy. Spending quality moments with family keeps me grounded, reminds me of my purpose, and renews my gratitude.
+          </p>
+          <span class="hobby-pill">FOUNDATIONAL ANCHOR</span>
+        </div>
+
+        <!-- Hobby 4: Skating (Velocity & Kinetic Equilibrium) -->
+        <div class="hobby-card skating scroll-reveal">
+          <div class="hobby-card-top">
+            <div class="hobby-title-group">
+              <div class="hobby-icon-badge">🛼</div>
+              <h3 class="hobby-name">Skating</h3>
+            </div>
+            <span class="hobby-state-badge">KINETIC EQUILIBRIUM</span>
+          </div>
+
+          <!-- Pure CSS/SVG Skater Glide Animation -->
+          <div class="hobby-anim-viewport">
+            <svg class="hobby-svg" viewBox="0 0 280 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="15" y1="125" x2="265" y2="125" stroke="rgba(168, 85, 247, 0.25)" stroke-width="2" stroke-dasharray="6 4"/>
+              
+              <!-- Gliding Skater Figure -->
+              <g class="skater-glide-motion">
+                <circle cx="140" cy="48" r="8" fill="#f8fafc"/>
+                <path d="M140 56 L134 85" stroke="#a855f7" stroke-width="6" stroke-linecap="round"/>
+                <path d="M134 85 L120 115" stroke="#c084fc" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M134 85 L148 115" stroke="#9333ea" stroke-width="4.5" stroke-linecap="round"/>
+
+                <!-- Skates & Glowing Wheels -->
+                <rect x="110" y="115" width="22" height="5" rx="2.5" fill="#f8fafc"/>
+                <circle cx="114" cy="122" r="3.5" fill="#00f0ff" class="wheel-spin"/>
+                <circle cx="128" cy="122" r="3.5" fill="#00f0ff" class="wheel-spin"/>
+
+                <rect x="140" y="115" width="22" height="5" rx="2.5" fill="#f8fafc"/>
+                <circle cx="144" cy="122" r="3.5" fill="#a855f7" class="wheel-spin"/>
+                <circle cx="158" cy="122" r="3.5" fill="#a855f7" class="wheel-spin"/>
+
+                <!-- Velocity Light Trails -->
+                <path d="M90 122 L110 122" stroke="rgba(0, 240, 255, 0.5)" stroke-width="2" stroke-dasharray="2 3"/>
+                <path d="M75 88 L125 88" stroke="rgba(168, 85, 247, 0.3)" stroke-width="1.5" stroke-dasharray="4 4"/>
+              </g>
+
+              <text x="140" y="24" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="rgba(168, 85, 247, 0.85)" letter-spacing="1">
+                KINETIC BALANCE • SPEED &amp; SERENITY
+              </text>
+            </svg>
+          </div>
+
+          <p class="hobby-desc">
+            Speed, reflexes, and kinetic balance on wheels. Embracing momentum while learning how to fall safely, recover instantly, and stay centered at high velocity.
+          </p>
+          <span class="hobby-pill">AGILITY &amp; KINETIC CALM</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Dynamic Section Transition Glow Line -->
+    <div class="section-transition-glow"></div>
+
+    <!-- ==========================================================================
+         6. "MY WHY" SECTION (THE EMOTIONAL NORTH STAR)
+         ========================================================================== -->
+    <section id="why" class="why-section">
+      <div class="why-shrine scroll-reveal">
+        <span class="quote-mark">“</span>
+        
+        <blockquote class="why-quote">
+          I want to become someone my family can <span class="gradient-word">depend on</span> and be <span class="gradient-word">proud of</span>.
+        </blockquote>
+
+        <p class="why-elaboration">
+          Every late-night study session, every line of Python code, and every complex system concept I tackle at Newton School of Technology is dedicated to this singular mission. Technology is the vehicle; becoming a dependable pillar for the people who believe in me is the destination.
+        </p>
+
+        <div class="why-values-ribbon">
+          <span class="value-chip">★ INTEGRITY</span>
+          <span class="value-chip">★ RELIABILITY</span>
+          <span class="value-chip">★ GRATITUDE</span>
+          <span class="value-chip">★ UNWAVERING PURPOSE</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dynamic Section Transition Glow Line -->
+    <div class="section-transition-glow"></div>
+
+    <!-- ==========================================================================
+         7. CLOSING & CONNECT SECTION
+         ========================================================================== -->
+    <section id="connect" class="closing-section">
+      <div class="closing-card scroll-reveal">
+        <div class="section-tag">06 // THE NEXT HORIZON</div>
+        <h2 class="closing-headline">Let's Connect &amp; Build Together</h2>
+        <p class="closing-subtext">
+          Whether you want to discuss Python, computer systems, student collaborations, fitness drills, or tech ideas—I'm always open to meaningful conversations.
+        </p>
+
+        <div class="contact-channels">
+          <div class="channel-pill">
+            <span>📍</span>
+            <span>Karnal, Haryana, India</span>
+          </div>
+          <div class="channel-pill">
+            <span>🏛️</span>
+            <span>Newton School of Technology</span>
+          </div>
+          <div class="channel-pill">
+            <span>⚡</span>
+            <span>Status: Constantly Learning</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Credits -->
+      <footer class="site-footer">
+        <div class="footer-identity">
+          <div class="brand-monogram" style="width:28px;height:28px;font-size:0.75rem;">PC</div>
+          <span><strong>Paras Choudhary</strong> // Crafted with Pure HTML5 &amp; CSS3</span>
+        </div>
+
+        <div>
+          <span>Newton School of Technology, Rishihood University</span>
+        </div>
+
+        <a href="#hero" class="footer-top-btn">
+          <span>Back to Top</span>
+          <span>↑</span>
+        </a>
+      </footer>
+    </section>
+
+  </div>
+
+</body>
+</html>
